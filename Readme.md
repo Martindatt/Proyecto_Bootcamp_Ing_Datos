@@ -1,4 +1,4 @@
-# Proyecto ETL - In-nova Tech (DummyJSON API)
+# 🚀 Proyecto ETL - In-nova Tech (DummyJSON API)
 
 Este proyecto realiza la extracción, limpieza y guardado de datos provenientes de la API pública de DummyJSON, simulando un pipeline real de e-commerce para la empresa ficticia **In-nova Tech**.
 
@@ -65,3 +65,53 @@ Este proyecto realiza la extracción, limpieza y guardado de datos provenientes 
 - `users_clean.csv`
 
 ---
+
+## 🧮 Transformaciones SQL con DuckDB
+
+En esta fase se consolidó todo el pipeline de datos usando **DuckDB** como motor local para ejecutar consultas.
+El objetivo fue unir las tablas principales (usuarios, carritos y productos), calcular métricas reales de negocio e iniciar la preparación del modelo analítico.
+
+Se creó un script único `transformaciones.sql` que:
+
+1. Lee los CSV limpios (productos, usuarios y carritos)
+2. Construye la tabla de hechos `fact_ventas`
+
+   - Unen los hechos de compras -Carts- con Productos y Clientes.
+   - Se obtienen metricas relevantes para un analisis de ventas.
+
+3. Genera el agregado `ventas_por_categoria`
+
+   - Se agrupan las ventas por categoria de productos.
+   - Se incluyen metricas para un analisis a nivel venta/categoria de producto.
+
+4. Exporta ambas tablas a la carpeta `outputs/`
+
+# Ejecutar todo el pipeline SQL
+
+python3 scripts_sql/run_sql.py
+
+## 📁 Archivos generados (outputs/)
+
+- `fact_ventas.csv`
+- `ventas_por_categoria.csv`
+
+## 🛠️ Tecnologías utilizadas
+
+- **Python** → extracción y limpieza con `requests` y `pandas`
+- **DuckDB (SQL)** → modelado de hechos y agregaciones
+- **Pandas** → normalización y validaciones
+- **CSV / ETL modular** → outputs ordenados por fase
+
+## 🧠 Qué aprendí
+
+- A utilizar **DuckDB** como motor analítico local sobre archivos CSV.
+- A modelar una **tabla de hechos** e integrar dimensiones (productos y usuarios).
+- A calcular métricas reales de negocio: ingresos, descuentos y unidades vendidas.
+- A estructurar un **flujo ETL SQL modular**, reproducible y automatizado desde Python.
+- A documentar y versionar un pipeline siguiendo **buenas prácticas de ingeniería de datos**.
+
+## ⚙️ Ejecutar todo el pipeline SQL
+
+```bash
+python3 scripts_sql/run_sql.py
+```
