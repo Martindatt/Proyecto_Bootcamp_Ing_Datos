@@ -86,10 +86,6 @@ Se creó un script único `transformaciones.sql` que:
 
 4. Exporta ambas tablas a la carpeta `outputs/`
 
-# Ejecutar todo el pipeline SQL
-
-python3 scripts_sql/run_sql.py
-
 ## 📁 Archivos generados (outputs/)
 
 - `fact_ventas.csv`
