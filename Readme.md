@@ -58,7 +58,7 @@ Este proyecto realiza la extracción, limpieza y guardado de datos provenientes 
 
 ---
 
-## 📁 Archivos generados (outputs/)
+## 📁 Archivos generados (outputs/silver)
 
 - `products_clean.csv`
 - `carts_clean.csv`
@@ -73,37 +73,49 @@ El objetivo fue unir las tablas principales (usuarios, carritos y productos), ca
 
 Se creó un script único `transformaciones.sql` que:
 
-1. Lee los CSV limpios (productos, usuarios y carritos)
-2. Construye la tabla de hechos `fact_ventas`
+1. Carga de fuentes limpias (silver/) como vistas (v_products, v_carts, v_users).
 
-   - Unen los hechos de compras -Carts- con Productos y Clientes.
-   - Se obtienen metricas relevantes para un analisis de ventas.
+2. Validación de integridad referencial (FKs):
 
-3. Genera el agregado `ventas_por_categoria`
+- Detecta carritos con product_id o user_id inexistentes.
+- Exporta auditorías (fk_prod_missing.csv, fk_user_missing.csv).
 
-   - Se agrupan las ventas por categoria de productos.
-   - Se incluyen metricas para un analisis a nivel venta/categoria de producto.
+3. Creación de la tabla de hechos `fact_ventas`:
 
-4. Exporta ambas tablas a la carpeta `outputs/`
+- Solo incluye filas con FKs válidas.
+- Calcula métricas de negocio: ingreso_bruto, ingreso_neto, descuento_importe.
 
-## 📁 Archivos generados (outputs/)
+4. Generación de la tabla analítica `ventas_por_categoria`:
+
+- Agrega métricas por categoría.
+- Incluye análisis adicional con CTEs:
+  - % de participación por categoría.
+  - Cantidad y porcentaje de productos sobre el promedio de su categoría.
+
+5. 📁 Export de resultados (gold/):
 
 - `fact_ventas.csv`
 - `ventas_por_categoria.csv`
 
+6. 📁 Export de auditorías (auditoria/):
+
+- Reportes de FKs faltantes y conteos de control.
+
 ## 🛠️ Tecnologías utilizadas
 
-- **Python** → extracción y limpieza con `requests` y `pandas`
-- **DuckDB (SQL)** → modelado de hechos y agregaciones
-- **Pandas** → normalización y validaciones
-- **CSV / ETL modular** → outputs ordenados por fase
+- **Python** → extracción y limpieza de APIs con `requests` y `pandas`.
+- **DuckDB (SQL)** → modelado analítico y transformaciones.
+- **Pandas** → normalización y validaciones.
+- **Logging + Audtioría FK** → validación de integridad previa.
+- **CSV / ETL modular** → outputs ordenados por fase y separación clara de capas de datos.
 
 ## 🧠 Qué aprendí
 
-- A utilizar **DuckDB** como motor analítico local sobre archivos CSV.
-- A modelar una **tabla de hechos** e integrar dimensiones (productos y usuarios).
-- A calcular métricas reales de negocio: ingresos, descuentos y unidades vendidas.
-- A estructurar un **flujo ETL SQL modular**, reproducible y automatizado desde Python.
+- A estructurar un **pipeline ETL** completo y modular, desde la extracción hasta la capa analítica.
+- A utilizar **DuckDB** como motor SQL embebido para procesamiento local de datos.
+- A aplicar **validaciones FK** antes de generar tablas de hechos.
+- A usar **CTEs y funciones VIEW** para cálculos analíticos (% participación, productos sobre promedio).
+- A organizar la información bajo una **arquitectura Silver / Gold / Auditoría**.
 - A documentar y versionar un pipeline siguiendo **buenas prácticas de ingeniería de datos**.
 
 ## ⚙️ Ejecutar todo el pipeline SQL

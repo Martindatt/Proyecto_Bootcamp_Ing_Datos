@@ -31,7 +31,7 @@ def main():
     logger.info(f"- Datos Limpios: {df_clean.shape}")
 
     # Guardar CSV usando tu utils.io
-    guardar_csv(df_clean, "outputs/products_clean.csv")
+    guardar_csv(df_clean, "outputs/silver/products_clean.csv")
     
     logger.info("ETL de API - Productos (Finalizado).\n")
     
@@ -44,7 +44,7 @@ def main():
     df_cart_clean = transform_cart_items(df_carts_raw)
     logger.info(f"- Datos Limpios: {df_cart_clean.shape}")
 
-    guardar_csv(df_cart_clean, "outputs/carts_clean.csv")
+    guardar_csv(df_cart_clean, "outputs/silver/carts_clean.csv")
 
     logger.info("ETL de API - Carts (Finalizado).\n")
     
@@ -55,7 +55,7 @@ def main():
     df_users_clean = transform_users(df_users_raw)
     logger.info(f"- Datos Limpios: {df_users_clean.shape}")  
 
-    guardar_csv(df_users_clean, "outputs/users_clean.csv")
+    guardar_csv(df_users_clean, "outputs/silver/users_clean.csv")
 
     logger.info("ETL de API - Usuarios (Finalizado).\n")
 

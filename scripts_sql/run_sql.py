@@ -28,11 +28,11 @@ def run_sql_script(sql_file, show_result=False):
     """ Si la palalbra 'export' está en el nombre del archivo, muestra mensaje de exportación """
     if "export" in sql_file.lower() or "transfomaciones" in sql_file.lower():
         print("Exportación finalizada correctamente:")
-        print(" -> outputs/fact_ventas.csv\n")
-        print(" -> outputs/ventas_por_categoria.csv\n")
+        print(" -> outputs/gold/fact_ventas.csv\n")
+        print(" -> outputs/gold/ventas_por_categoria.csv\n")
 
 """Ejecutar el script completo"""
-run_sql_script("#5_transfomaciones.sql")
+run_sql_script("transformaciones.sql")
 
 
 """ Ejecutar los scripts SQL en orden """
@@ -40,7 +40,6 @@ run_sql_script("#5_transfomaciones.sql")
 #run_sql_script("#1_fact_ventas.sql", show_result=True)
 #run_sql_script("#2_ventas_categoria.sql", show_result=True)
 #run_sql_script("#3_export_csv.sql") # Exporta outputs generados
-
 
 
 print("Proceso finalizado.")
