@@ -10,7 +10,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SQL_DIR = os.path.join(BASE_DIR, "..", "sql")
 
 """ Conexión a DuckDB """
-con= duckdb.connect()
+con= duckdb.connect("datawarehouse.duckdb")
 
 """ Función para ejecutar un script SQL desde un archivo para mostrar el resultado"""
 def run_sql_script(sql_file, show_result=False):
