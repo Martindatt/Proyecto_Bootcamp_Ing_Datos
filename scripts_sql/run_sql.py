@@ -34,7 +34,6 @@ def run_sql_script(sql_file, show_result=False):
 """Ejecutar el script completo"""
 run_sql_script("transformaciones.sql")
 
-
 """ Ejecutar los scripts SQL en orden """
 #run_sql_script("#0_fuentes_csv.sql", show_result=True)
 #run_sql_script("#1_fact_ventas.sql", show_result=True)
