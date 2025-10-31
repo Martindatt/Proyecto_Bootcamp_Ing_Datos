@@ -101,6 +101,81 @@ Se creó un script único `transformaciones.sql` que:
 
 - Reportes de FKs faltantes y conteos de control.
 
+--- 
+
+## 🧱 Modelo Estrella - Datawharehouse
+
+En esta fase se implementó el modelo de datos analítico bajo un esquema estrella, que permite analizar métricas de ventas desde distintas perspectivas: producto, cliente y tiempo.
+
+El script `create_schema.sql` crea la capa DW (Data Warehouse) dentro del archivo innova_tech_dw.duckdb, a partir de las tablas generadas en la etapa anterior.
+
+## 📊 Tablas creadas
+
+1️⃣ Dimensiones
+
+- **dim_usuario**
+Contiene información descriptiva de cada cliente:
+user_id, nombre, apellido, email, ciudad, provincia, cp, direccion.
+
+- **dim_producto**
+Describe los productos y su clasificación:
+product_id, nombre_producto, categoria, marca.
+
+- **dim_fecha**
+Estructura de calendario para análisis temporal:
+fecha_id, anio, mes, nombre_mes, trimestre, dia, dia_semana.
+Los registros se generan automáticamente a partir de las fechas presentes en fact_ventas_dw.
+
+2️⃣ Tabla de Hechos
+
+**fact_ventas_dw**
+Registra cada línea de venta (nivel ítem de carrito) y enlaza con las dimensiones.
+Métricas calculadas:
+
+cantidad
+
+precio_unitario
+
+ingreso_bruto
+
+descuento_importe
+
+ingreso_neto
+
+descuento_pct
+
+---
+
+## 🔗 Relaciones
+
+       dim_usuario          dim_producto
+       (user_id PK)         (product_id PK)
+             │                    │
+             └──────┬──────────────┘
+                    ▼
+              fact_ventas_dw
+                     │
+                     ▼
+                dim_fecha
+
+
+---
+
+## 📈 Métricas posibles
+
+- Ventas totales por mes / trimestre / año
+
+- Ingresos brutos / netos por categoría o marca
+
+- Top usuarios y productos más vendidos
+
+- Ticket promedio (ingreso_neto / cantidad)
+
+- % de descuento aplicado por periodo o categoría
+
+- Comparativos YoY / QoQ (año contra año, trimestre contra trimestre)
+
+
 ## 🛠️ Tecnologías utilizadas
 
 - **Python** → extracción y limpieza de APIs con `requests` y `pandas`.
