@@ -17,24 +17,33 @@ Pipeline completo (DuckDB)
 
 
 --  #0 FUENTES CSV  →  VISTAS
-   
-CREATE OR REPLACE VIEW v_products AS
-SELECT *
-FROM read_csv_auto('outputs/silver/products_clean.csv', HEADER=TRUE);
 
-CREATE OR REPLACE VIEW v_carts AS
-SELECT *
-FROM read_csv_auto('outputs/silver/carts_clean.csv', HEADER=TRUE);
+-- Limpieza
+DROP VIEW  IF EXISTS v_products;
+DROP VIEW  IF EXISTS v_users;
+DROP VIEW  IF EXISTS v_carts;
 
-CREATE OR REPLACE VIEW v_users AS
-SELECT *
-FROM read_csv_auto('outputs/silver/users_clean.csv', HEADER=TRUE);
+DROP TABLE IF EXISTS stg_products;
+DROP TABLE IF EXISTS stg_users;
+DROP TABLE IF EXISTS stg_carts;
 
-/* -- comprobación de vistas (opcional)
-SELECT * FROM v_products LIMIT 3;
-SELECT * FROM v_carts LIMIT 3;
-SELECT * FROM v_users LIMIT 3;
-*/
+-- Staging físico de CSV limpios
+CREATE TABLE stg_products AS
+SELECT * FROM read_csv_auto('outputs/silver/products_clean.csv', HEADER=TRUE);
+
+CREATE TABLE stg_users AS
+SELECT * FROM read_csv_auto('outputs/silver/users_clean.csv', HEADER=TRUE);
+
+CREATE TABLE stg_carts AS
+SELECT * FROM read_csv_auto('outputs/silver/carts_clean.csv', HEADER=TRUE);
+
+-- Vistas que referencian staging (OPCIONAL EN EL CASO DE QUERER VISTAS)
+
+
+CREATE VIEW v_products AS SELECT * FROM stg_products;
+CREATE VIEW v_users    AS SELECT * FROM stg_users;
+CREATE VIEW v_carts    AS SELECT * FROM stg_carts;
+
 
 
 --   #1 VALIDACIÓN FK + CREACIÓN DE FACT_VENTAS
